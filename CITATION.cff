@@ -1,0 +1,32 @@
+# VERIFY before publication: replace the placeholder author list, affiliations,
+# venue and DOI with the real values, and delete this comment block.
+cff-version: 1.2.0
+message: "If you use Fashion-RQBench, please cite the paper and this repository."
+title: "Fashion-RQBench: A Four-Task Retrieval Benchmark over Hierarchical Semantic IDs"
+abstract: >-
+  Fashion-RQBench is a four-task benchmark for retrieval and ranking over a
+  hierarchical semantic-ID item space. Items are tokenized into three-level
+  semantic IDs by an RQ-VAE trained with a per-level attribute exclusivity loss;
+  natural-language queries are authored per SID cluster from that cluster's
+  attribute distribution, giving every query a ground-truth item set derived
+  from the hierarchy. The release contains 588 clusters, 5,807 queries and four
+  tasks (query-product ranking, hierarchical relevance classification, sibling
+  discrimination, query paraphrase robustness).
+type: software
+authors:
+  - family-names: "TODO"
+    given-names: "TODO"
+    affiliation: "TODO"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: "1.0.0"
+date-released: "2026-01-01"
+license: MIT
+license-url: "https://opensource.org/licenses/MIT"
+repository-code: "https://github.com/<your-username>/fashion-rqbench"
+keywords:
+  - information retrieval
+  - recommender systems
+  - semantic IDs
+  - fashion
+  - benchmark
+  - RQ-VAE

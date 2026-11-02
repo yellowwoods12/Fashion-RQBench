@@ -1,0 +1,21 @@
+records: 588
+
+clusters total: 588  (target 588)
+  level 1:   17  (target 17)
+  level 2:  135  (target 135)
+  level 3:  436  (target 436)
+
+cluster sizes (group_size):
+  level 1: mean=823.9 (target 823.9) min=6 max=5349 (target range (6, 5349))
+  level 2: mean=219.2 (target 219.2) min=5 max=4896 (target range (5, 4896))
+  level 3: mean=79.5 (target 79.5) min=5 max=4888 (target range (5, 4888))
+
+enriched queries: 5,807  (target 5,380)
+queries per cluster: min=6 max=10 mean=9.9  (target range (2, 12))
+  clusters with >=1 query: 588/588; median=10.0
+  distribution: [(6, 2), (8, 2), (9, 61), (10, 523)]
+
+unique query strings: 5,752 / 5,807 = 99.1% (target 5,305 / 98.7%)
+query words: mean=11.2 (target 10.0) min=5 max=23 (target range (3, 26))
+
+enriched entries missing attributes: 0

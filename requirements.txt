@@ -1,0 +1,13 @@
+# Query generation + task construction/scoring
+polars>=1.30
+numpy>=1.26
+scikit-learn>=1.3
+
+# Local LLM backend used to author the queries (Qwen3-8B) via transformers
+torch>=2.4
+transformers>=4.51
+
+# Optional: used by stage 1 to drop near-duplicate queries within a cluster.
+# If absent, that dedup step is skipped and the corpus keeps a few more
+# near-duplicates -- see src/benchmark/README.md.
+# sentence-transformers>=3.0

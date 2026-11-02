@@ -1,0 +1,21 @@
+# data is fetched by scripts/download_data.py, not versioned (16 MB catalog, 169 MB embeddings)
+data/*.parquet
+
+# upload payload for the data host: the exact two files plus checksums, kept out of
+# git so the repo stays ~10 MB. See docs/DATA_CARD.md for how to publish them.
+release_data/
+
+# regenerated outputs -- the released corpus under benchmark/queries and
+# benchmark/tasks is checked in; anything a reproduction run writes is not
+benchmark/tasks_generated/
+benchmark/queries/*_regenerated_*
+logs/
+
+# attribute-extraction cache (resume state, regenerable)
+.query_attr_cache_qwen3.json
+
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+wandb/
+*.part
