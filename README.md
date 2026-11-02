@@ -138,15 +138,7 @@ See [CITATION.cff](CITATION.cff) (`VERIFY`: author list and venue are placeholde
 - **Code** — MIT ([LICENSE](LICENSE)).
 - **Benchmark data** (queries, tasks, ground truth, semantic IDs) — CC BY 4.0
   ([LICENSE-DATA](LICENSE-DATA)).
-- **Underlying catalog** — MIT (upstream), so redistribution is permitted; retain the upstream
-  copyright notice. Details in
+- **Underlying catalog** — MIT (upstream), details in
   [docs/DATA_CARD.md](docs/DATA_CARD.md#licence).
+  
 
-## Before you publish
-
-1. `VERIFY` **`CITATION.cff`** — author list, affiliations, venue, DOI.
-2. **Replace `<your-username>`** in the clone URL above with the real GitHub account.
-3. **Host the data files** from `release_data/` and substitute the real URL for
-   `<DATA_BASE_URL>` here, in `scripts/download_data.py` (`DEFAULT_BASE_URL`), and in
-   `docs/DATA_CARD.md`. Steps for HuggingFace and Zenodo are in the data card.
-4. Run `python scripts/validate_release.py --strict` — the pre-publication gate.
