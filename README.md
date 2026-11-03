@@ -108,6 +108,7 @@ data/                 populated by download_data.py (not in version control)
 - [docs/HIERARCHY_QUALITY.md](docs/HIERARCHY_QUALITY.md) — SID hierarchy metrics
 - [docs/CATALOG_PROVENANCE.md](docs/CATALOG_PROVENANCE.md) — catalog derivation and source of record
 - [docs/REPRODUCE_SIDS.md](docs/REPRODUCE_SIDS.md) — checkpoint config and SID regeneration
+- [docs/HUMAN_STUDY_ETHICS.md](docs/HUMAN_STUDY_ETHICS.md) — human-study protocols, ethics/consent, aggregate results
 - [docs/EVALUATION_SCOPE.md](docs/EVALUATION_SCOPE.md) — which evaluation code is included
 - [examples/](examples/) — runnable BM25 baseline and scoring walkthrough
 
@@ -145,6 +146,14 @@ included, see [docs/EVALUATION_SCOPE.md](docs/EVALUATION_SCOPE.md).
 ## Citation
 
 If you use this benchmark, please cite it — see [CITATION.cff](CITATION.cff).
+
+## Ethics
+
+Queries are LLM-generated and contain no personal data. The two human studies
+(query naturalness/clarity and SID relevance-label validation) used voluntary
+participants with informed consent; only aggregate results are released. See
+[docs/HUMAN_STUDY_ETHICS.md](docs/HUMAN_STUDY_ETHICS.md) for the protocols,
+aggregate tables, and ethics/consent statement.
 
 ## Licensing
 

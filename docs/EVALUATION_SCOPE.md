@@ -30,6 +30,9 @@ Prediction formats and metric definitions are in [TASKS.md](TASKS.md).
 The task-level scorers are sufficient to evaluate a model on the four released
 tasks. The additional analyses require code that is not part of this release;
 cite the paper for their definitions and contact the authors if you need them.
+Human-study protocols, ethics/consent, and aggregate results are in
+[HUMAN_STUDY_ETHICS.md](HUMAN_STUDY_ETHICS.md); participant-level data are not
+released.
 
 ## Running the shipped evaluation
 

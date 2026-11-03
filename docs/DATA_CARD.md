@@ -156,6 +156,16 @@ The benchmark inherits the catalog's and the authoring model's skews. These are 
   aggregate scores can hide subgroup failures. The catalog is a commercial snapshot, so
   conclusions about "fashion search" in general are out of scope.
 
+## Human subjects and ethics
+
+Two human studies were conducted: a 32-participant query naturalness/clarity
+study and a 38-annotator validation of SID relevance labels (150 queries, 990
+annotated pairs, 2,970 judgments). Participation was voluntary and informed
+consent was obtained; only aggregate results are released, with no
+participant-level or annotator-level data. Protocols, aggregate tables, and the
+ethics/consent statement are in
+[HUMAN_STUDY_ETHICS.md](HUMAN_STUDY_ETHICS.md).
+
 ## Data availability
 
 The artifacts are not bundled with the git repository. They are published as assets of the
