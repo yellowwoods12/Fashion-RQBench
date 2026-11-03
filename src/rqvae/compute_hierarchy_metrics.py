@@ -60,7 +60,7 @@ COVERAGE_VARIANTS = (2, 5)    # >=2 = this repo's cluster floor; >=5 = benchmark
 # Fine-level SupCon labels: articleType x each attribute (src_3token/train_rqvae_purity.py)
 COMBO_TARGETS = ["baseColour", "gender", "usage", "season", "ageGroup", "price_tier", "fashionType"]
 
-# Levels as the paper's table numbers them, with the attribute each level supervises
+# Levels as numbered in docs/HIERARCHY_QUALITY.md, with the attribute each level supervises
 LEVELS = [
     ("L1", "prefix_1", "masterCategory"),
     ("L2", "prefix_2", "articleType"),

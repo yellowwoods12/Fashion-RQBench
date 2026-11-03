@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use Fashion-RQBench, please cite the paper and this repository."
+message: "If you use Fashion-RQBench, please cite this repository."
 title: "Fashion-RQBench: A Four-Task Retrieval Benchmark over Hierarchical Semantic IDs"
 abstract: >-
   Fashion-RQBench is a four-task benchmark for retrieval and ranking over a
@@ -36,24 +36,3 @@ keywords:
   - fashion
   - benchmark
   - RQ-VAE
-preferred-citation:
-  type: article
-  title: "FASHION-RQ: Mining Hierarchical Semantic Structure for Automated Evaluation of Fashion Retrieval"
-  authors:
-    - family-names: "Shukla"
-      given-names: "Tripti"
-    - family-names: "Somasundaram"
-      given-names: "Shwetha"
-    - family-names: "Gupta"
-      given-names: "Akshat"
-    - family-names: "Garg"
-      given-names: "Rohit"
-    - family-names: "Duff"
-      given-names: "Paul"
-    - family-names: "Anderson"
-      given-names: "Ian"
-  year: 2026
-  month: 10
-  journal: "arXiv"
-  doi: "10.48550/arXiv.2610.17841"
-  url: "https://arxiv.org/abs/2610.17841"
