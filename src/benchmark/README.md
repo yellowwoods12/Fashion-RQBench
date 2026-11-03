@@ -22,7 +22,7 @@ scripts/reproduce.sh   the whole pipeline, with the settings the release used
 | `fashion_rq_task{1..4}_build_*.py` | 3 | build the four task files + ground truth (GPU-free, seeded, deterministic) |
 | `fashion_rq_task{1..4}_compute_metrics.py` | — | score predictions against them |
 | `qwen_local_client.py` | 1,2 | in-process Qwen3-8B batching client (thinking disabled, optional YaRN) |
-| `legacy_gemini/` | — | the original Gemini-authored generator and enricher, verbatim, for reference — see its README |
+| `legacy_gemini/` | — | the original Gemini-authored generator and enricher, for reference — see its README |
 
 ## Stage contract
 

@@ -12,7 +12,7 @@ stripped from the output to keep the enriched file compact.
 Usage:
     python enrich_benchmark_with_query_attributes.py \
         --benchmark ./results/evaluation_outputs/benchmark_54k_unfiltered.json \
-        --output    ./results/semantic-id-llms/benchmark_suite/data/benchmark_54k_unfiltered_enriched_new.json \
+        --output    ./results/benchmark_54k_unfiltered_enriched_new.json \
         [--model gemini-2.5-flash] \
         [--concurrency 8] \
         [--cache .query_attr_cache.json]

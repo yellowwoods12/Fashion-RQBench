@@ -21,7 +21,7 @@ If your embeddings file also carries the attribute columns, pass the same path t
 both. Rows are matched on `id`, so the two files need not be in the same order;
 they must cover the same id set.
 
-Adapted from the internal script used to generate the published SID parquet: same
+Adapted from the script that produced the released SID parquet: same
 checkpoint format, same output columns, with paths parameterised and the attribute
 labels -- needed only to compute the SupCon loss during training -- no longer
 loaded, since inference needs embeddings alone.

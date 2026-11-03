@@ -14,16 +14,19 @@ place.
   items_embeddings_1024d.parquet 169 MB  OPTIONAL -- Qwen3-Embedding-0.6B item
                                           embeddings. Only needed to retrain the
                                           RQ-VAE from scratch (src/rqvae/).
+  rqvae_purity_best_model.pth    17 MB   OPTIONAL -- RQ-VAE checkpoint used to
+                                          produce the released SIDs. Only needed
+                                          to re-encode items or inspect weights.
 
 Usage:
-  python scripts/download_data.py                       # both files
+  python scripts/download_data.py                       # all three files
   python scripts/download_data.py --only sids           # just the 16 MB catalog
+  python scripts/download_data.py --only checkpoint     # just the model weights
   python scripts/download_data.py --base-url https://... --out-dir /somewhere
 
-Hosting: point --base-url (or $FASHION_RQ_DATA_BASE_URL) at wherever the two
-files live -- a HuggingFace dataset repo, a Zenodo record, or any static host.
-`release_data/` in the authors' working copy contains the exact files to upload
-plus SHA256SUMS and manifest.json. See docs/DATA_CARD.md.
+Hosting: the default URL is this project's GitHub release. Override it with
+--base-url (or $FASHION_RQ_DATA_BASE_URL) to use a mirror or any static host.
+See docs/DATA_CARD.md for the expected files and checksums.
 """
 
 import argparse
@@ -41,19 +44,31 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 FILES = {
     "sids": {
         "name": "items_with_sids.parquet",
+        "dest": "data/items_with_sids.parquet",
         "sha256": "ce3431c09daf158b16b3cb9456e6ffa8ddf114e7fc488d6a4f2d62683ed5b8eb",
         "bytes": 16228222,
         "required": True,
     },
     "embeddings": {
         "name": "items_embeddings_1024d.parquet",
+        "dest": "data/items_embeddings_1024d.parquet",
         "sha256": "e680f6ac4fe62be183e06ce769018d681be7ad2e2dfb67430c860b23866322fe",
         "bytes": 169157398,
         "required": False,
     },
+    "checkpoint": {
+        "name": "rqvae_purity_best_model.pth",
+        "dest": "checkpoints/rqvae_purity/best_model.pth",
+        "sha256": "7ef5abc07e58c832aba2699d390505dd9286044eb03825bc9849e60d4243ea25",
+        "bytes": 16750453,
+        "required": False,
+    },
 }
 
-DEFAULT_BASE_URL = os.environ.get("FASHION_RQ_DATA_BASE_URL", "")
+DEFAULT_BASE_URL = os.environ.get(
+    "FASHION_RQ_DATA_BASE_URL",
+    "https://github.com/yellowwoods12/Fashion-RQBench/releases/download/v1.0.0",
+)
 
 
 def sha256(path: Path) -> str:
@@ -97,8 +112,10 @@ def main() -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base-url", default=DEFAULT_BASE_URL,
                     help="Base URL holding the data files (or $FASHION_RQ_DATA_BASE_URL)")
-    ap.add_argument("--out-dir", type=Path, default=REPO_ROOT / "data")
-    ap.add_argument("--only", choices=["sids", "embeddings", "all"], default="all")
+    ap.add_argument("--out-dir", type=Path, default=REPO_ROOT,
+                    help="Root directory for downloaded files (data/ and checkpoints/ go under it)")
+    ap.add_argument("--only", choices=["sids", "embeddings", "checkpoint", "all"],
+                    default="all")
     ap.add_argument("--verify-only", action="store_true",
                     help="Check existing files against the pinned hashes; download nothing")
     ap.add_argument("--force", action="store_true", help="Re-download even if present and valid")
@@ -111,13 +128,14 @@ def main() -> int:
         print("No --base-url given and $FASHION_RQ_DATA_BASE_URL is unset.\n")
         print("Point --base-url at wherever the data files are hosted, e.g.")
         print("  python scripts/download_data.py \\")
-        print("      --base-url https://huggingface.co/datasets/<user>/fashion-rqbench/resolve/main")
-        print("\nSee docs/DATA_CARD.md for hosting options and how to build the bundle.")
+        print("      --base-url https://github.com/<owner>/<repo>/releases/download/<tag>")
+        print("\nSee docs/DATA_CARD.md for the expected files and checksums.")
         return 2
 
     failures = []
     for spec in targets:
-        dest = args.out_dir / spec["name"]
+        dest = args.out_dir / spec["dest"]
+        dest.parent.mkdir(parents=True, exist_ok=True)
         label = "required" if spec["required"] else "optional"
         print(f"[{spec['name']}] ({label}, {human(spec['bytes'])})")
 

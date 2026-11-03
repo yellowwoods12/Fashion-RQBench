@@ -1,20 +1,20 @@
 # Legacy: the Gemini-authored pipeline
 
-These two files are the **original** Fashion-RQ query pipeline, kept verbatim so the
-methodology behind the Gemini-authored numbers can be inspected and cited. They are not
-wired into this release.
+These two files are the **original** Fashion-RQ query pipeline, kept so the methodology
+behind the Gemini-authored numbers can be inspected and cited. They are not wired into this
+release.
 
 | File | Role |
 |---|---|
 | `benchmark_creation_unfiltered_public_dataset_purity_v3.py` | stage 1 — cluster analysis + query authoring via the hosted Gemini API |
 | `enrich_benchmark_with_query_attributes.py` | stage 2 — per-query attribute extraction via Gemini |
 
-## Why they are here unmodified
+## Why they are here
 
-They carry the internal absolute paths and API-client assumptions they were written with,
-including `DATA_DIR = Path("/home/...")` and a Gemini client. They are reference material,
-not runnable code — editing them would destroy the provenance that makes them worth
-including.
+They retain the original pipeline's local-path placeholders and API-client assumptions,
+including `DATA_DIR = Path("/path/to/data")` and a Gemini client. They are reference
+material, not runnable code; changes beyond path redaction would obscure the provenance
+that makes them worth including.
 
 Use them to compare prompts, budgets and cluster-selection rules against the Qwen3-8B
 pipeline in the parent directory. To actually reproduce a corpus, use

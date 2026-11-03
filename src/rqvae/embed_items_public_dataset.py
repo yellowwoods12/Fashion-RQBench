@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Generate embeddings for Glance product items using Qwen3-Embedding model.
+Generate embeddings for fashion catalog items using Qwen3-Embedding.
 Reads pre-tokenized data and generates embeddings optimized for GPU execution.
 
-First run src/tokenize_items_glance.py to pre-process data on CPU.
+The input is a tokenized `.npz` produced by the pipeline's CPU tokenizer step.
 """
 
 import os
@@ -24,7 +24,7 @@ from transformers import AutoModel
 
 from logger import setup_logger
 
-logger = setup_logger("embed-items-glance", log_to_file=True)
+logger = setup_logger("embed-items", log_to_file=True)
 
 # Data settings
 DATASET_NAME = "public_dataset"  # Dataset name
@@ -187,7 +187,7 @@ def embed_items():
     logger.info(f"Loading data from {input_path}")
     if not input_path.exists():
         raise FileNotFoundError(
-            f"Dataset not found at {input_path}. Please ensure glance_dataset.csv exists in the dataset/ directory."
+            f"Dataset not found at {input_path}. Please ensure the catalog CSV exists in the dataset directory."
         )
 
     # Read CSV with schema overrides to handle mixed types in id column

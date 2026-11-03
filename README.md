@@ -12,12 +12,9 @@ than from human annotation.
 **Release contents:** 588 clusters (17 / 135 / 436 at levels 1 / 2 / 3), 5,807 queries
 (99.1% unique strings, mean 11.2 words), and four tasks totalling 44,156 scored instances
 with ground truth (4,103 ranking queries · 32,688 classification pairs · 3,262 sibling
-queries · 4,103 paraphrase queries in 416 groups). Code, queries, tasks and ground truth ship in this repository; the item
-catalog and semantic IDs are fetched by script (see [Data](#data)).
-
-> **Status:** pre-publication. One item is still marked `VERIFY` — the citation metadata in
-> [CITATION.cff](CITATION.cff). Licensing is settled: MIT for the code, CC BY 4.0 for the
-> benchmark data, on an MIT-licensed upstream catalog. See [Before you publish](#before-you-publish).
+queries · 4,103 paraphrase queries in 416 groups). Code, queries, tasks and ground truth
+ship in this repository; the item catalog and semantic IDs are distributed separately
+(see [Data](#data)).
 
 ---
 
@@ -61,12 +58,13 @@ number to quote for hierarchy quality.
 ## Quickstart
 
 ```bash
-git clone https://github.com/<your-username>/fashion-rqbench.git
-cd fashion-rqbench
+git clone https://github.com/yellowwoods12/Fashion-RQBench.git
+cd Fashion-RQBench
 pip install -r requirements.txt
 
-# 1. fetch the catalog + semantic IDs (~16 MB)
-python scripts/download_data.py --base-url <DATA_BASE_URL>
+# 1. (optional) fetch the catalog + semantic IDs (~16 MB); drop --only to also
+#    get the embeddings and the RQ-VAE checkpoint (~200 MB total)
+python scripts/download_data.py --only sids
 
 # 2. confirm the release is intact (checksums, counts, schemas)
 python scripts/validate_release.py
@@ -95,7 +93,7 @@ benchmark/            the released benchmark — self-contained, no data downloa
   tasks/              4 task files with ground truth (gzip JSONL)
 docs/                 data card, task specs, generation process, hierarchy metrics
 src/benchmark/        query generation + task construction + scoring (Qwen3-8B)
-src/benchmark/legacy_gemini/   the earlier Gemini-authored pipeline, verbatim, for reference
+src/benchmark/legacy_gemini/   the earlier Gemini-authored pipeline, for reference
 src/rqvae/            RQ-VAE training with the exclusivity loss + SID generation
 scripts/              download_data.py, validate_release.py, reproduce.sh
 data/                 populated by download_data.py (not in version control)
@@ -103,19 +101,20 @@ data/                 populated by download_data.py (not in version control)
 
 ## Data
 
-The item catalog and semantic IDs are hosted separately because of size — the 1024-d
-embeddings used to train the RQ-VAE are 169 MB, and even without them the catalog parquet
-is 16 MB. `scripts/download_data.py` fetches both, verifying SHA-256 against hashes pinned in
-the script and recorded in `SHA256SUMS`:
+The item catalog, embeddings and RQ-VAE checkpoint are published as assets of the
+[v1.0.0 release](https://github.com/yellowwoods12/Fashion-RQBench/releases/tag/v1.0.0)
+because of size. `scripts/download_data.py` fetches them from the release by default,
+verifying SHA-256 against hashes pinned in the script:
 
 | File | Size | Needed for |
 |---|---|---|
-| `items_with_sids.parquet` | 16 MB | building or scoring any task — catalog + `sid_0/sid_1/sid_2` + `semantic_id` for all 44,446 items |
-| `items_embeddings_1024d.parquet` | 169 MB | retraining the RQ-VAE only (`src/rqvae/`) |
+| `items_with_sids.parquet` | 16 MB | regenerating queries or building tasks — catalog + `sid_0/sid_1/sid_2` + `semantic_id` for all 44,446 items |
+| `items_embeddings_1024d.parquet` | 169 MB | retraining or re-encoding with the RQ-VAE (`src/rqvae/`) |
+| `rqvae_purity_best_model.pth` | 17 MB | re-encoding items with the released SIDs' checkpoint (`src/rqvae/generate_sids.py`) |
 
 Queries, tasks and ground truth **do** ship in-repo (6 MB gzipped), so the benchmark is
 usable immediately after cloning. See [docs/DATA_CARD.md](docs/DATA_CARD.md) for provenance,
-schema, licensing and how the authors host the two data files.
+schema, licensing, checksums and hosting details for the three downloads.
 
 ## Reproducing
 
@@ -131,14 +130,13 @@ overwritten — regenerated output goes to `benchmark/queries/*_regenerated_*` a
 
 ## Citation
 
-See [CITATION.cff](CITATION.cff) (`VERIFY`: author list and venue are placeholders).
+If you use this benchmark, please cite it — see [CITATION.cff](CITATION.cff).
 
 ## Licensing
 
 - **Code** — MIT ([LICENSE](LICENSE)).
 - **Benchmark data** (queries, tasks, ground truth, semantic IDs) — CC BY 4.0
   ([LICENSE-DATA](LICENSE-DATA)).
+- **RQ-VAE checkpoint** (`rqvae_purity_best_model.pth`) — MIT, like the code.
 - **Underlying catalog** — MIT (upstream), details in
   [docs/DATA_CARD.md](docs/DATA_CARD.md#licence).
-  
-

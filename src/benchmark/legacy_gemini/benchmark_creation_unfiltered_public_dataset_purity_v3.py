@@ -35,7 +35,7 @@ warnings.filterwarnings('ignore')
 # plt.rcParams['figure.figsize'] = (14, 8)
 
 # Configuration — public Amazon Fashion dataset
-DATA_DIR = Path("/home/tripti.shukla/tripti-workspace/semantic-id-llms/data")
+DATA_DIR = Path("/path/to/data")
 
 print("Libraries imported successfully")
 

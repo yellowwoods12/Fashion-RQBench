@@ -9,11 +9,13 @@ data files that are not in version control.
 |---|---|---|---|
 | Query corpus (588 clusters, 5,807 queries + attributes) | `benchmark/queries/` | 3.8 MB gz | CC BY 4.0 |
 | Four task files + ground truth | `benchmark/tasks/` | 2.1 MB gz | CC BY 4.0 |
-| Catalog + semantic IDs, 44,446 items | hosted — `items_with_sids.parquet` | 16 MB | upstream MIT + CC BY 4.0 for the SID columns |
-| Item embeddings, 1024-d | hosted — `items_embeddings_1024d.parquet` | 169 MB | upstream |
+| Catalog + semantic IDs, 44,446 items | separate download — `items_with_sids.parquet` | 16 MB | upstream MIT + CC BY 4.0 for the SID columns (needed to regenerate queries or build tasks) |
+| Item embeddings, 1024-d | separate download — `items_embeddings_1024d.parquet` | 169 MB | upstream |
+| RQ-VAE checkpoint | separate download — `rqvae_purity_best_model.pth` | 17 MB | MIT |
 
-Fetched with `python scripts/download_data.py --base-url <URL>`; both files are
-SHA-256-verified against hashes pinned in that script.
+Fetched with `python scripts/download_data.py` (the default base URL is the v1.0.0
+release); each file is SHA-256-verified against hashes pinned in that script. See
+[Data availability](#data-availability).
 
 ## Source catalog
 
@@ -113,8 +115,7 @@ applied (`audience_repairs`).
   quality figures transfer to another catalog or embedder.
 - **The catalog is not relevance-labelled by humans.** Relevance comes from the SID tree
   (Exact / Sibling / Related / Irrelevant). The benchmark therefore measures agreement with a
-  *learned* hierarchy, not with human judgements of relevance. A separate SID-label validation
-  study exists for that question.
+  *learned* hierarchy, not with human judgements of relevance.
 - **Queries are LLM-authored and template-shaped.** They are grounded in each cluster's real
   attribute distribution, but they are not real user queries. Paraphrase groups (task 4) in
   particular are one model's variations on a theme.
@@ -128,34 +129,26 @@ applied (`audience_repairs`).
   inferring `unisex` where the query names no audience. Attributes feed only task 1's
   per-attribute reporting breakdown, not any ground truth.
 
-## Hosting the data files
+## Data availability
 
-The two files live in the authors' working copy under `release_data/`, alongside
-`SHA256SUMS` and `manifest.json`. Upload them and point the release at the result.
+The artifacts are not bundled with the git repository. They are published as assets of the
+[v1.0.0 release](https://github.com/yellowwoods12/Fashion-RQBench/releases/tag/v1.0.0), and
+`scripts/download_data.py` downloads and checksum-verifies them by default:
 
-**HuggingFace dataset repo** (recommended — no rate limits, resumable, `huggingface_hub`
-downloads natively):
+| File | Bytes | SHA-256 | Local path |
+|---|---|---|---|
+| `items_with_sids.parquet` | 16,228,222 | `ce3431c0…d5b8eb` | `data/` |
+| `items_embeddings_1024d.parquet` | 169,157,398 | `e680f6ac…6322fe` | `data/` |
+| `rqvae_purity_best_model.pth` | 16,750,453 | `7ef5abc0…43ea25` | `checkpoints/rqvae_purity/` |
 
-```bash
-huggingface-cli upload <user>/fashion-rqbench release_data/ --repo-type dataset
-# then: --base-url https://huggingface.co/datasets/<user>/fashion-rqbench/resolve/main
-```
-
-**Zenodo** (recommended if you need a DOI for the data): create a record, upload both files,
-publish, and use the record's file URLs as `--base-url`. Cite the DOI in the paper.
-
-**Any static host** works — the script only needs `GET <base-url>/<filename>`.
-
-After uploading, update the URL in three places: the README quickstart, `DEFAULT_BASE_URL` in
-`scripts/download_data.py`, and the table above. Then run
-`python scripts/validate_release.py --strict`.
-
-Alternatively, set `FASHION_RQ_DATA_BASE_URL` in the environment and leave the default empty.
+Override the host with `--base-url` or `$FASHION_RQ_DATA_BASE_URL` to use a mirror. Only the
+catalog is needed to regenerate queries or build new tasks; none of the three is needed to
+score the shipped tasks.
 
 ## Licence
 
 - Benchmark artifacts produced here (queries, attributes, tasks, ground truth, SID
   assignments): **CC BY 4.0** — see [../LICENSE-DATA](../LICENSE-DATA).
-- Code: **MIT** — see [../LICENSE](../LICENSE).
+- Code and the RQ-VAE checkpoint: **MIT** — see [../LICENSE](../LICENSE).
 - Underlying product catalog: **MIT** (upstream, confirmed) — redistributable; retain the
   upstream copyright notice. Our derived columns and artifacts are CC BY 4.0.

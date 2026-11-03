@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 — unreleased
+## 1.0.0 — 2026-11-03
 
 First public release.
 
@@ -17,6 +17,6 @@ First public release.
 - **Tooling** — `scripts/download_data.py` (checksum-pinned data fetch),
   `scripts/reproduce.sh` (end-to-end regeneration), `scripts/validate_release.py`
   (release gate), `src/rqvae/compute_hierarchy_metrics.py` (hierarchy quality).
-- **Packaging** — the catalog and embeddings are hosted separately (16 MB / 169 MB); the
-  benchmark artifacts ship in-repo gzipped (90 MB raw → 6 MB). The four task files rebuild
-  byte-identically from the shipped corpus.
+- **Packaging** — the catalog, embeddings and RQ-VAE checkpoint are published as v1.0.0
+  release assets (16 MB / 169 MB / 17 MB); the benchmark artifacts ship in-repo gzipped
+  (90 MB raw → 6 MB). The four task files rebuild byte-identically from the shipped corpus.

@@ -162,9 +162,7 @@ they record what the model authored, not the live query list, and nothing downst
 them (stage 2 reads only `flat_key_value_map.user_queries`; stage 3 reads the enriched file).
 
 Only the five texts changed — 5,807 queries, 6–10 per cluster, **5,752 unique (99.1%)**,
-and all four task files (`4,103 / 32,688 / 3,262 / 416`) are unchanged in size. The
-superseded stage-1 file is kept at
-the pre-repair stage-1 artifact.
+and all four task files (`4,103 / 32,688 / 3,262 / 416`) are unchanged in size.
 
 A separate pre-existing quirk, untouched: on 4 clusters the query cap trimmed the canonical
 list to 10 while `key_value_map.user_queries.values` still holds the model's 11. Nothing
@@ -326,11 +324,11 @@ corpus. Paths are env-overridable: `SID_ITEMS_PARQUET`, `FASHION_RQ_ENRICHED_JSO
 
 ## 7. Provenance
 
-- The original Gemini-authored suite is included verbatim under
+- The original Gemini-authored suite is included under
   [`src/benchmark/legacy_gemini/`](../src/benchmark/legacy_gemini/) for methodological
-  reference; it still carries the internal absolute paths it was written with and is not
-  wired into this release. The task and metrics scripts here are unmodified ports apart
-  from path handling, gzip support and the scorer defaults.
+  reference, with its local paths replaced by placeholders; it is not wired into this
+  release. The task and metrics scripts here are unmodified ports apart from path
+  handling, gzip support and the scorer defaults.
 - Qwen3-8B porting notes (YaRN, the query-budget cap, HF offline mode) are in §3 and in
   the header comments of `scripts/reproduce.sh`.
 - The released corpus, tasks and ground truth were produced by this pipeline at the

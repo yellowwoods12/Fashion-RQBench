@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Check that this release is intact, and that the shipped benchmark matches the
-counts published with the paper.
+counts published with this release.
 
 Runs without a GPU and without the data files for the parts that do not need
-them, so it works as a post-clone smoke test and as a pre-publication gate.
+them, so it works as a post-clone smoke test and as a release gate.
 
 Checks
   artifacts  every shipped .gz opens, and each task file's record count and the
@@ -13,7 +13,7 @@ Checks
   data       if data/ is populated: the catalog parquet has the expected row
              count, the SID columns are present and well-formed, and the
              checksums match the pinned manifest in scripts/download_data.py
-  hygiene    no absolute paths or internal hostnames leaked into the source
+  hygiene    no absolute local paths leaked into the source
 
 Usage:
   python scripts/validate_release.py
@@ -144,22 +144,24 @@ def check_artifacts() -> None:
 
 def check_data() -> None:
     print("\n[data]")
-    data_dir = REPO_ROOT / "data"
-    sids = data_dir / "items_with_sids.parquet"
+    for key in ("sids", "embeddings", "checkpoint"):
+        spec = FILES[key]
+        path = REPO_ROOT / spec["dest"]
+        if not path.exists():
+            warn(f"{spec['dest']} not present — run scripts/download_data.py --only {key}")
+            continue
+        actual = sha256(path)
+        ok(f"{path.name} checksum {actual[:12]}…") if actual == spec["sha256"] else \
+            bad(f"{path.name} checksum {actual[:12]}… (expected {spec['sha256'][:12]}…)")
+
+    sids = REPO_ROOT / FILES["sids"]["dest"]
     if not sids.exists():
-        warn("data/items_with_sids.parquet not present — run scripts/download_data.py "
-             "(artifacts above were still validated)")
         return
     try:
         import polars as pl
     except ImportError:
-        warn("polars not installed — skipping data checks")
+        warn("polars not installed — skipping parquet schema checks")
         return
-
-    actual = sha256(sids)
-    want = FILES["sids"]["sha256"]
-    ok(f"items_with_sids.parquet checksum {actual[:12]}…") if actual == want else \
-        bad(f"items_with_sids.parquet checksum {actual[:12]}… (expected {want[:12]}…)")
 
     df = pl.read_parquet(sids)
     ok(f"catalog: {df.height} items") if df.height == 44446 else \
@@ -184,18 +186,15 @@ def check_data() -> None:
 
 def check_hygiene() -> None:
     print("\n[hygiene]")
-    pat = re.compile(r"/home/[a-z_]+|glance-datasets|/data/output/")
+    pat = re.compile(r"/(?:home|Users|mnt)/[a-z_.-]+")
     hits = []
     for path in sorted((REPO_ROOT / "src").rglob("*.py")):
-        # the legacy reference copy is kept verbatim from the internal repo
-        if "legacy_gemini" in path.parts:
-            continue
         text = path.read_text(encoding="utf-8")
         for i, line in enumerate(text.splitlines(), 1):
             if pat.search(line) and "pathlib" not in line:
                 hits.append(f"{path.relative_to(REPO_ROOT)}:{i}")
-    ok("no absolute internal paths in src/") if not hits else \
-        bad(f"absolute internal paths remain: {hits[:6]}")
+    ok("no absolute local paths in src/") if not hits else \
+        bad(f"absolute local paths remain: {hits[:6]}")
 
     unparseable = []
     for path in sorted((REPO_ROOT / "src").rglob("*.py")):

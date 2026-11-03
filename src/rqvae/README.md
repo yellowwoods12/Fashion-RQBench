@@ -22,6 +22,7 @@ trainer logs to Weights & Biases. Set `WANDB_MODE=offline` to skip the network.
 
 ```bash
 python scripts/download_data.py --only embeddings   # data/items_embeddings_1024d.parquet (169 MB)
+python scripts/download_data.py --only checkpoint   # checkpoints/rqvae_purity/best_model.pth (17 MB)
 ```
 
 If you would rather regenerate the embeddings than download them, run
@@ -62,8 +63,8 @@ The encoder reads embeddings and writes SIDs onto the catalog, matching rows on 
 two released files can be used as-is. Pass the same path to `--embeddings` and `--catalog` if
 you have a single parquet carrying both.
 
-> `generate_sids.py` is adapted from the internal script that produced the published SID
-> parquet: same checkpoint format and same output columns, with paths parameterised and the
+> `generate_sids.py` is adapted from the script that produced the released SID parquet:
+> same checkpoint format and same output columns, with paths parameterised and the
 > training-only attribute labels no longer loaded. If you only need to *use* the released
 > semantic IDs, download `items_with_sids.parquet` and skip this step entirely.
 

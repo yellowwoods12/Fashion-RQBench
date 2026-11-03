@@ -1,8 +1,10 @@
-# data is fetched by scripts/download_data.py, not versioned (16 MB catalog, 169 MB embeddings)
+# data and model weights are fetched by scripts/download_data.py, not versioned
+# (16 MB catalog, 169 MB embeddings, 17 MB checkpoint)
 data/*.parquet
+checkpoints/
 
-# upload payload for the data host: the exact two files plus checksums, kept out of
-# git so the repo stays ~10 MB. See docs/DATA_CARD.md for how to publish them.
+# local bundle of the two data files plus checksums; kept out of git so the repo
+# stays small (see docs/DATA_CARD.md#data-availability)
 release_data/
 
 # regenerated outputs -- the released corpus under benchmark/queries and
