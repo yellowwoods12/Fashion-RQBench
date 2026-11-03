@@ -1,7 +1,7 @@
 # Data card
 
-What the release contains, where it came from, what its limits are, and how to host the two
-data files that are not in version control.
+What the release contains, where it came from, what its limits are, and how to host the three
+artifacts that are not in version control.
 
 ## What ships where
 
@@ -21,7 +21,8 @@ release); each file is SHA-256-verified against hashes pinned in that script. Se
 
 44,446 fashion products. The taxonomy columns, the image host, and the row count all match
 the public **Myntra product catalog distributed as the Kaggle "Fashion Product Images
-Dataset"**, whose `styles.csv` holds 44,441 rows:
+Dataset"**, whose `styles.csv` holds 44,441 rows. Full derivation notes and the
+source-of-record statement are in [CATALOG_PROVENANCE.md](CATALOG_PROVENANCE.md):
 
 - 44,441 of the 44,446 rows carry an `imageURL` on `assets.myntassets.com` — the Myntra CDN.
 - The 5 remaining rows have a null `imageURL` and no image; they are retained because their
@@ -47,7 +48,7 @@ Added by this project on top of the source catalog:
 |---|---|
 | `brandName`, `ageGroup`, `price`, `discountedPrice`, `fashionType`, `displayCategories`, `articleAttributes`, `description`, `imageURL` | present in the working catalog prior to this release; treated as given |
 | `item_context` | the text blob embedded to produce item vectors (median 954 characters, max 52,860) |
-| `embedding` | 1024-d vector from **Qwen3-Embedding-0.6B**, pooled and projected to 1024 dims (`src/rqvae/embed_items_public_dataset.py`) — shipped separately as `items_embeddings_1024d.parquet` |
+| `embedding` | 1024-d vector from **Qwen3-Embedding-0.6B**, pooled and projected to 1024 dims — shipped separately as `items_embeddings_1024d.parquet`. Regeneration is not supported: the reference script needs an internal tokenizer that is not included. |
 | `sid_0`, `sid_1`, `sid_2` | RQ-VAE codebook indices at each of the three quantization levels (64-entry codebooks) |
 | `semantic_id` | `"<|sid_{sid_0}|><|sid_{sid_1}|><|sid_{sid_2}|>"` — the item's semantic ID |
 
@@ -129,6 +130,32 @@ applied (`audience_repairs`).
   inferring `unisex` where the query names no audience. Attributes feed only task 1's
   per-attribute reporting breakdown, not any ground truth.
 
+### Bias and representational skew
+
+The benchmark inherits the catalog's and the authoring model's skews. These are the main ones.
+
+| Dimension | Released distribution |
+|---|---|
+| Gender | Men 22,165; Women 18,632; Unisex 2,164; Boys 830; Girls 655 |
+| Age group | Adults-Men 21,887; Adults-Women 18,426; Adults-Unisex 1,942; Kids-Boys 1,071; Kids-Girls 849; Kids-Unisex 270; 1 blank |
+| Usage | Casual 34,414 (77.4%); Sports 4,025; Ethnic 3,208; Formal 2,359; NA 316; 123 other |
+| Fashion type | Fashion 39,973; Core 4,470; 3 blank |
+| Master category | Apparel 21,400; Accessories 11,289; Footwear 9,222; Personal Care 2,404; Free Items 105; Sporting Goods 25; Home 1 |
+| Brand concentration | 424 brands; Nike 2,203, Puma 2,098, Adidas 1,923, then a long tail |
+
+- **Single-catalog, single-locale skew.** The source is one Indian e-commerce catalog with
+  English product names and Myntra's taxonomy. It is not a random sample of global fashion and
+  over-represents casual, branded, adult apparel. See
+  [CATALOG_PROVENANCE.md](CATALOG_PROVENANCE.md).
+- **LLM authoring skew.** Queries were written by Qwen3-8B in English; they may under-represent
+  non-Western styles, local terminology, non-binary audiences, and size/fit language. Audience
+  mentions were audited, but the corpus is synthetic and not a sample of user language.
+- **Binary gender taxonomy.** The catalog uses Men/Women/Unisex/Boys/Girls; this does not cover
+  all gender identities, and the benchmark should not be read as a measure of inclusive search.
+- **No population-level claims.** Report metrics per attribute and per cluster where possible;
+  aggregate scores can hide subgroup failures. The catalog is a commercial snapshot, so
+  conclusions about "fashion search" in general are out of scope.
+
 ## Data availability
 
 The artifacts are not bundled with the git repository. They are published as assets of the
@@ -151,4 +178,5 @@ score the shipped tasks.
   assignments): **CC BY 4.0** — see [../LICENSE-DATA](../LICENSE-DATA).
 - Code and the RQ-VAE checkpoint: **MIT** — see [../LICENSE](../LICENSE).
 - Underlying product catalog: **MIT** (upstream, confirmed) — redistributable; retain the
-  upstream copyright notice. Our derived columns and artifacts are CC BY 4.0.
+  upstream copyright notice in [../NOTICE](../NOTICE). Our derived columns and artifacts are
+  CC BY 4.0.

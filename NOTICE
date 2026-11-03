@@ -1,0 +1,20 @@
+Fashion-RQBench includes a derived version of the Fashion Product Images
+Dataset.
+
+Upstream dataset
+  Fashion Product Images Dataset
+  Param Aggarwal, Kaggle
+  https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-dataset
+
+Upstream licence
+  MIT, as stated by the dataset's distributor. See docs/DATA_CARD.md for the
+  treatment of the catalog, images and trademarks.
+
+Derived artifacts
+  The semantic-ID assignments, queries, tasks and ground truth produced by this
+  project are licensed CC BY 4.0; see LICENSE-DATA. Code and the RQ-VAE
+  checkpoint are licensed MIT; see LICENSE.
+
+Images
+  Product images are not redistributed: imageURL values point at Myntra's CDN.
+  Brand names in product metadata remain their owners' trademarks.

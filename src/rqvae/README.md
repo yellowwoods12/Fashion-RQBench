@@ -15,8 +15,13 @@ consumes. Background and quality figures: [../../docs/HIERARCHY_QUALITY.md](../.
 ## Requirements
 
 A CUDA GPU (training on 44k items × 1024-d at 3 levels fits comfortably on a single 24 GB
-card), plus `torch`, `transformers`, `polars`, `numpy`, `scikit-learn`, and `wandb` — the
-trainer logs to Weights & Biases. Set `WANDB_MODE=offline` to skip the network.
+card). Install the pinned training extras:
+
+```bash
+pip install -r requirements-train.txt
+```
+
+The trainer logs to Weights & Biases; set `WANDB_MODE=offline` to skip the network.
 
 ## Data you need
 
@@ -25,9 +30,10 @@ python scripts/download_data.py --only embeddings   # data/items_embeddings_1024
 python scripts/download_data.py --only checkpoint   # checkpoints/rqvae_purity/best_model.pth (17 MB)
 ```
 
-If you would rather regenerate the embeddings than download them, run
-`embed_items_public_dataset.py` against the catalog — it loads `Qwen/Qwen3-Embedding-0.6B`,
-encodes each item's `item_context`, and projects to 1024 dimensions.
+Regenerating the embeddings is **not supported** in this release.
+`embed_items_public_dataset.py` is retained for provenance, but it expects a
+tokenizer step (`src/tokenize_items.py`) and a CSV/NPZ layout that are not
+shipped. Download the checksummed `items_embeddings_1024d.parquet` instead.
 
 ## Train
 
@@ -61,7 +67,8 @@ python src/rqvae/generate_sids.py \
 
 The encoder reads embeddings and writes SIDs onto the catalog, matching rows on `id` — so the
 two released files can be used as-is. Pass the same path to `--embeddings` and `--catalog` if
-you have a single parquet carrying both.
+you have a single parquet carrying both. The exact checkpoint configuration and expected
+hashes are in [../../docs/REPRODUCE_SIDS.md](../../docs/REPRODUCE_SIDS.md).
 
 > `generate_sids.py` is adapted from the script that produced the released SID parquet:
 > same checkpoint format and same output columns, with paths parameterised and the

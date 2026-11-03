@@ -3,6 +3,10 @@
 Four tasks over one semantic-ID hierarchy. All share a single relevance mapping and all are
 scored by scripts in `src/benchmark/`.
 
+> **Scope:** this document and the shipped scorers cover the four task-level metrics. The
+> paper's weighted query relevance and attribute-match scores are not part of this release; see
+> [EVALUATION_SCOPE.md](EVALUATION_SCOPE.md) for the exact boundary.
+
 ## Relevance mapping
 
 Derived from the SID prefix tree, not from human annotation:

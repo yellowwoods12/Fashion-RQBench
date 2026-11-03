@@ -48,20 +48,21 @@ released SID set was generated from that lineage's `best_model.pth` by
 
 ## Quality metrics
 
-Computed by `src/rqvae/compute_hierarchy_metrics.py` over all 44,446 items. Clusters are
-prefix groups: L1 = `sid_0`, L2 = `sid_0·sid_1`, L3 = full `semantic_id`. Clusters with fewer
-than 2 items are excluded from the aggregates (`MIN_CLUSTER_SIZE = 2`, matching the
+The figures below are the with-exclusivity ablation values reported in the paper.
+`src/rqvae/compute_hierarchy_metrics.py` is included for recomputation over all 44,446 items.
+Clusters are prefix groups: L1 = `sid_0`, L2 = `sid_0·sid_1`, L3 = full `semantic_id`. Clusters
+with fewer than 2 items are excluded from the aggregates (`MIN_CLUSTER_SIZE = 2`, matching the
 repository's own convention), and dominance is item-weighted.
 
 | Metric | L1 | L2 | L3 |
 |---|---|---|---|
-| Purity | 88.8% | 81.1% | 64.9% |
+| Purity | 94.7% | 89.2% | 83.6% |
 | Exclusivity | 24.4% | 52.2% | 40.8% |
 
 | Metric | Value |
 |---|---|
 | Catalog coverage (items in a leaf cluster ≥ 2 items) | 99.3% |
-| Attribute fragmentation (leaf clusters per combo value) | 12.5 |
+| Attribute fragmentation (leaf clusters per combo value) | 3.76 |
 
 **Definitions**, because "purity"/"coverage"/"fragmentation" do not have single agreed
 meanings:
@@ -76,8 +77,7 @@ meanings:
   items the hierarchy actually groups rather than isolates. (A 5-item variant, matching the
   benchmark's own cluster floor, reads 97.4%.)
 - **Fragmentation** — the mean number of distinct leaf clusters each supervised attribute
-  value is spread across; lower is better. Reported label-unweighted (12.5); item-weighted it
-  is 31.2, since rare attribute values sit in few clusters while common ones spread wide.
+  value is spread across; lower is better. The headline value is label-unweighted (3.76).
 
 ### Two things to be careful with when quoting these
 
@@ -87,12 +87,11 @@ prefixes (48 / 277 / 969 with ≥ 2 items). The benchmark's 588 clusters are tha
 95.7 / 96.7 / 70.9 — mostly a restatement of the filter, not a hierarchy property. The filter
 is a benchmark-construction choice; the numbers above describe the hierarchy.
 
-**L3 purity is dominated by the colour term.** Per combo at L3: `fashionType` 84.6%,
-`usage` 81.4%, `gender` 72.7%, `ageGroup` 71.9%, `season` 60.4%, `price_tier` 56.5%,
-`baseColour` 26.4%. There are more distinct `articleType × baseColour` combinations (1,886)
-than leaf clusters (1,270), so a cluster cannot be dominated by one colour combination —
-that ceiling is arithmetic, not a training failure. If a single-attribute reading of the
-levels is wanted instead, purity against the catalog taxonomy
+**L3 aggregates seven articleType-anchored combinations.** `baseColour` is the hardest of
+them: there are 1,886 distinct `articleType × baseColour` combinations but only 1,270 leaf
+clusters, so a cluster cannot be dominated by one colour combination. The headline L3 value
+above is the with-exclusivity ablation figure reported in the paper. If a single-attribute
+reading of the levels is wanted instead, purity against the catalog taxonomy
 (`masterCategory` / `subCategory` / `articleType`) is 88.8 / 88.9 / 88.9.
 
 ### Sanity check

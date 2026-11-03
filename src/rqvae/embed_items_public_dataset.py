@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-Generate embeddings for fashion catalog items using Qwen3-Embedding.
-Reads pre-tokenized data and generates embeddings optimized for GPU execution.
+Reference implementation for generating 1024-d Qwen3-Embedding item vectors.
 
-The input is a tokenized `.npz` produced by the pipeline's CPU tokenizer step.
+This script is kept for provenance, not as a supported reproduction path: it
+expects a tokenizer step (``src/tokenize_items.py``) and a CSV/NPZ layout that
+are not included in this release. Use the released
+``items_embeddings_1024d.parquet`` instead (see docs/DATA_CARD.md).
 """
 
 import os
@@ -240,7 +242,9 @@ def embed_items():
     # Load pre-tokenized data
     if not tokenized_path.exists():
         raise FileNotFoundError(
-            f"Pre-tokenized data not found at {tokenized_path}. Please run src/tokenize_items.py first."
+            f"Pre-tokenized data not found at {tokenized_path}. This reference script "
+            f"expects the authors' internal tokenizer output, which is not shipped; "
+            f"use the released items_embeddings_1024d.parquet instead."
         )
 
     logger.info(f"Loading pre-tokenized data from {tokenized_path}")

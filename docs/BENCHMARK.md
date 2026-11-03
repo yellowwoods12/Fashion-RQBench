@@ -118,7 +118,7 @@ setting that comes closest — see §3 step 2.
 
 A query carries the audience it is written for, so a query naming a gender its cluster does
 not contain describes items that are not there and no retrieval system can satisfy. Stage 1
-produced **5 such queries across 5 clusters** (0.09% of 5,827; 5 of 588 clusters):
+produced **5 such queries across 5 clusters** (0.09% of 5,807; 5 of 588 clusters):
 
 | cluster | cluster gender mix | query |
 |---|---|---|
@@ -209,7 +209,7 @@ side breaks metrics out per tag (§5).
 Per cluster, samples a class-balanced set of **2 items per class** (E/S/R/I = 8 pairs)
 and pairs the same 8 item ids with every cluster query — a fresh `query_id` and 8
 `pair_id` rows per query. Label codes: `E`/`S`/`R`/`I`. Observed distribution:
-9,654 E / 9,493 S / 9,654 R / 9,654 I (161 S pairs short because a few clusters have
+8,206 E / 8,070 S / 8,206 R / 8,206 I (136 S pairs short because a few clusters have
 < 2 sibling items in their pool — `sample_with_seed` returns fewer when the pool runs
 out rather than padding).
 
@@ -246,7 +246,7 @@ grade-0 candidate is not.
 
 ### Task 4 — Query Paraphrase Robustness
 `task4_paraphrase_benchmark.jsonl` — **416 paraphrase groups** covering all 4,103
-queries (groups of 4–12 paraphrases; 352 groups have 12).
+queries (groups of 6–10 paraphrases; 367 groups have 10, 45 have 9, 2 have 8, 2 have 6).
 
 Each group is one cluster's full usable-query set, sharing a single candidate set
 sampled exactly like Task 1 (3/4/4/4, grades 3/2/1/0). Sharing the pool is what makes

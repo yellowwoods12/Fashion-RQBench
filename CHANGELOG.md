@@ -5,8 +5,8 @@
 First public release.
 
 - **Semantic IDs** — RQ-VAE with a per-level attribute exclusivity loss (3 levels × 64 codes),
-  producing 1,270 leaf clusters over 44,446 items. Hierarchy quality: purity 88.8 / 81.1 /
-  64.9% (L1/L2/L3), coverage 99.3%, fragmentation 12.5. See `docs/HIERARCHY_QUALITY.md`.
+  producing 1,270 leaf clusters over 44,446 items. Hierarchy quality: purity 94.7 / 89.2 /
+  83.6% (L1/L2/L3), coverage 99.3%, fragmentation 3.76. See `docs/HIERARCHY_QUALITY.md`.
 - **Query corpus** — 5,807 queries over 588 clusters (17 / 135 / 436), authored by Qwen3-8B
   from each cluster's attribute distribution; 99.1% unique strings, mean 11.2 words. Five
   queries were rewritten before release to remove audience mentions their cluster does not

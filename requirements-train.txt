@@ -1,0 +1,12 @@
+-r requirements.txt
+
+# RQ-VAE training. For a CUDA 12.8 build, install torch from
+# https://download.pytorch.org/whl/cu128 with the same version.
+torch==2.10.0
+transformers==5.20.2
+tqdm==4.70.1
+
+# The trainer logs to Weights & Biases. wandb was not installed in the release
+# environment; pin this to the version used for your training run, or set
+# WANDB_MODE=offline.
+wandb>=0.17

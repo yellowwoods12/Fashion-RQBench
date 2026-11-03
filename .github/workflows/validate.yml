@@ -1,0 +1,37 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install core requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate shipped artifacts and source hygiene
+        run: python scripts/validate_release.py
+
+      - name: Fetch the catalog and validate its checksum and schema
+        run: |
+          python scripts/download_data.py --only sids
+          python scripts/validate_release.py
+
+      - name: Run the example baseline and score it
+        run: |
+          python examples/bm25_baseline.py --output /tmp/task1_preds.json
+          python src/benchmark/fashion_rq_task1_compute_metrics.py \
+            --predictions /tmp/task1_preds.json --output /tmp/task1_metrics.json
+
+      - name: Compile check
+        run: python -m compileall -q src scripts examples

@@ -22,7 +22,9 @@ Attribute columns used as supervision labels (match RQ-VAE item_context):
   (extend via ATTR_COLS / _COMBO_COLS)
 """
 
+import argparse
 import inspect
+import random
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -831,7 +833,28 @@ def train_rqvae_purity(model: RQVAEPurity, data_loader, config: RQVAEPurityConfi
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    config = RQVAEPurityConfig()
+    ap = argparse.ArgumentParser(description="Train the Fashion-RQBench RQ-VAE.")
+    ap.add_argument("--embeddings-path", type=Path,
+                    default=Path("data/items_embeddings_1024d.parquet"),
+                    help="Parquet with id + 1024-d embeddings + attribute labels")
+    ap.add_argument("--output-dir", type=Path, default=Path("checkpoints/rqvae_purity"),
+                    help="Where checkpoints are written")
+    ap.add_argument("--num-epochs", type=int, default=None,
+                    help="Override the config's num_epochs")
+    ap.add_argument("--seed", type=int, default=42,
+                    help="Seed for the train/validation split and torch RNG")
+    args = ap.parse_args()
+
+    config = RQVAEPurityConfig(
+        embeddings_path=args.embeddings_path,
+        checkpoint_dir=args.output_dir,
+    )
+    if args.num_epochs is not None:
+        config.num_epochs = args.num_epochs
+
+    torch.manual_seed(args.seed)
+    random.seed(args.seed)
+
     device_manager = DeviceManager(logger)
     device = device_manager.device
 
@@ -843,7 +866,7 @@ if __name__ == "__main__":
     val_size = int(len(dataset) * config.val_split)
     train_size = len(dataset) - val_size
     train_ds, val_ds = torch.utils.data.random_split(
-        dataset, [train_size, val_size], generator=torch.Generator().manual_seed(42)
+        dataset, [train_size, val_size], generator=torch.Generator().manual_seed(args.seed)
     )
 
     train_loader = DataLoader(

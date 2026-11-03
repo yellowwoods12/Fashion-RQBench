@@ -21,7 +21,6 @@ Usage:
 """
 
 import argparse
-import ast
 import gzip
 import hashlib
 import json
@@ -199,7 +198,7 @@ def check_hygiene() -> None:
     unparseable = []
     for path in sorted((REPO_ROOT / "src").rglob("*.py")):
         try:
-            ast.parse(path.read_text(encoding="utf-8"))
+            compile(path.read_text(encoding="utf-8"), str(path), "exec")
         except SyntaxError as exc:
             unparseable.append(f"{path.name}: {exc}")
     ok("every python file in src/ parses") if not unparseable else \

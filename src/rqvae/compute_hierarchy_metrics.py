@@ -81,11 +81,11 @@ def price_tier(price) -> Optional[str]:
     return "premium"
 
 
-def load() -> pl.DataFrame:
+def load(path: Path = PARQUET) -> pl.DataFrame:
     cols = ["id", "discountedPrice", "masterCategory", "subCategory", "articleType",
             "baseColour", "gender", "usage", "season", "ageGroup", "fashionType",
             "sid_0", "sid_1", "sid_2"]
-    df = pl.read_parquet(PARQUET, columns=cols)
+    df = pl.read_parquet(path, columns=cols)
     df = df.with_columns([
         pl.format("<|sid_{}|>", pl.col("sid_0")).alias("prefix_1"),
         pl.format("<|sid_{}|><|sid_{}|>", pl.col("sid_0"), pl.col("sid_1")).alias("prefix_2"),
@@ -146,10 +146,8 @@ def main() -> None:
     ap.add_argument("--json", type=Path, default=None, help="Also write results as JSON")
     args = ap.parse_args()
 
-    global PARQUET
-    PARQUET = args.parquet
-    print(f"Loading {PARQUET.name} …")
-    df = load()
+    print(f"Loading {args.parquet.name} …")
+    df = load(args.parquet)
     n = df.height
     print(f"  {n:,} items\n")
 
