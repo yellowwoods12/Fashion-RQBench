@@ -13,8 +13,8 @@ than from human annotation.
 (99.1% unique strings, mean 11.2 words), and four tasks totalling 44,156 scored instances
 with ground truth (4,103 ranking queries · 32,688 classification pairs · 3,262 sibling
 queries · 4,103 paraphrase queries in 416 groups). Code, queries, tasks and ground truth
-ship in this repository; the item catalog and semantic IDs are distributed separately
-(see [Data](#data)).
+ship in this repository; the item catalog, embeddings and RQ-VAE checkpoint are published
+as release assets (see [Data](#data)).
 
 ---
 
