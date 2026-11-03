@@ -130,7 +130,25 @@ overwritten — regenerated output goes to `benchmark/queries/*_regenerated_*` a
 
 ## Citation
 
-If you use this benchmark, please cite it — see [CITATION.cff](CITATION.cff).
+If you use Fashion-RQBench, please cite the paper:
+
+> Tripti Shukla, Shwetha Somasundaram, Akshat Gupta, Rohit Garg, Paul Duff, and Ian
+> Anderson. **FASHION-RQ: Mining Hierarchical Semantic Structure for Automated Evaluation
+> of Fashion Retrieval.** arXiv:2610.17841, 2026.
+> <https://arxiv.org/abs/2610.17841>
+
+```bibtex
+@article{shukla2026fashionrq,
+  title   = {FASHION-RQ: Mining Hierarchical Semantic Structure for Automated Evaluation of Fashion Retrieval},
+  author  = {Shukla, Tripti and Somasundaram, Shwetha and Gupta, Akshat and Garg, Rohit and Duff, Paul and Anderson, Ian},
+  journal = {arXiv preprint arXiv:2610.17841},
+  year    = {2026},
+  doi     = {10.48550/arXiv.2610.17841},
+  url     = {https://arxiv.org/abs/2610.17841}
+}
+```
+
+Machine-readable metadata is in [CITATION.cff](CITATION.cff).
 
 ## Licensing
 

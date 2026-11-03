@@ -14,6 +14,16 @@ type: software
 authors:
   - family-names: "Shukla"
     given-names: "Tripti"
+  - family-names: "Somasundaram"
+    given-names: "Shwetha"
+  - family-names: "Gupta"
+    given-names: "Akshat"
+  - family-names: "Garg"
+    given-names: "Rohit"
+  - family-names: "Duff"
+    given-names: "Paul"
+  - family-names: "Anderson"
+    given-names: "Ian"
 version: "1.0.0"
 date-released: "2026-11-03"
 license: MIT
@@ -26,3 +36,24 @@ keywords:
   - fashion
   - benchmark
   - RQ-VAE
+preferred-citation:
+  type: article
+  title: "FASHION-RQ: Mining Hierarchical Semantic Structure for Automated Evaluation of Fashion Retrieval"
+  authors:
+    - family-names: "Shukla"
+      given-names: "Tripti"
+    - family-names: "Somasundaram"
+      given-names: "Shwetha"
+    - family-names: "Gupta"
+      given-names: "Akshat"
+    - family-names: "Garg"
+      given-names: "Rohit"
+    - family-names: "Duff"
+      given-names: "Paul"
+    - family-names: "Anderson"
+      given-names: "Ian"
+  year: 2026
+  month: 10
+  journal: "arXiv"
+  doi: "10.48550/arXiv.2610.17841"
+  url: "https://arxiv.org/abs/2610.17841"
